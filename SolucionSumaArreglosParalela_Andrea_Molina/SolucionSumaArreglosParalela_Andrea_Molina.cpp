@@ -2,7 +2,9 @@
 //
 
 #include <iostream>
+#include <cstdlib>
 #include <omp.h>
+#include <ctime>
 
 #define N 1000
 #define chunk 100
@@ -14,10 +16,11 @@ int main()
 {
     std::cout << "Sumando Arreglos en Paralelo!\n";
     float a[N], b[N], c[N];
-    int i;
+    
+    srand(time(0));
 
     // Inicialización de los arreglos
-    for (i = 0; i < N; i++)
+    for (int i = 0; i < N; i++)
     {
         a[i] = rand() % 1000; //Genera numeros aleatorios entre 0 y 1000
         b[i] = rand() % 1000;
@@ -27,7 +30,7 @@ int main()
 
     // Paralelización con OpenMP
     #pragma omp parallel for shared(a, b, c, pedazos) private(i) schedule(static, pedazos)
-    for (i = 0; i < N; i++)
+    for (int i = 0; i < N; i++)
         c[i] = a[i] + b[i];
 
     // Imprimir resultados
@@ -39,6 +42,8 @@ int main()
 
     std::cout << "Imprimiendo los primeros " << mostrar << " valores del arreglo c: " << std::endl;
     imprimeArreglo(c);
+
+    return 0;
 }
 
 // Función para imprimir los primeros valores del arreglo
